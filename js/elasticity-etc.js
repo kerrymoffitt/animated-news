@@ -9,9 +9,13 @@
 // Three.js xforms
 // Add one Point
 
+/**
+ * Actually set up the Brooks plot, including camera animation driver.
+ */
 function runPlot() {
     'use strict';
 
+    // Populate the Z data, strip by strip, starting with max value per strip
     const stripMaxima = [180.0, 150.0, 128.0, 110.0, 100.0, 90.0];
     let whichStrip = 0;
 
@@ -20,25 +24,33 @@ function runPlot() {
     let data_z = [];
     let z_row;
 
-    for (let j = 0; j <= 20; j += 2) {
-
-        data_x.push(j);
-    }
-
+    // Iterate over Y axis
     for (let i = 0.1; i <= 0.2; i += 0.02) {
 
         z_row = [];
         let maxThisStrip = stripMaxima[whichStrip];
 
+        // Iterate over X axis
         for (let j = 0; j <= 20; j += 2) {
             z_row.push(maxThisStrip * (20.0 - j) / 20.0);
         }
 
-        data_y.push(i);
+        // Add this strip to 2D Z data
         data_z.push(z_row);
+
+        // Let Y axis know its values
+        data_y.push(i);
+
+        // Advance strip index so we get correct next max
         whichStrip++;
     }
 
+    // Let X axis know its values
+    for (let j = 0; j <= 20; j += 2) {
+        data_x.push(j);
+    }
+
+    // Build wrappers for input to Plotly, and actually create plot
     let data_wrapper = {
 
         title: {text: 'Effects of Throughput and Elasticity'},
@@ -68,6 +80,7 @@ function runPlot() {
         autosize: true
     };
 
+    // Set up callbacks, to do our best to start/stop camera animation
     Plotly.newPlot('myDiv', [data_wrapper], layout, {responsive: true})
         .then(plot => {
 
@@ -94,6 +107,10 @@ function runPlot() {
     let rotator = window.setInterval(animateCamera, 16);
 }
 
+/**
+ * Drive camera animation
+ */
+
 function animateCamera() {
     'use strict';
 
@@ -117,4 +134,5 @@ function animateCamera() {
     Plotly.relayout('myDiv', 'scene.camera.eye', newEye);
 }
 
+// Let 'er rip!
 runPlot();
