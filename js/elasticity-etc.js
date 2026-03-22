@@ -58,6 +58,8 @@ function runPlot() {
 
         contours: {x: {show: true}, y: {show: true}},
 
+        showscale: false,
+
         type: 'surface'
     };
 
@@ -79,6 +81,11 @@ function runPlot() {
 
         title: {
             text: 'Effects of Throughput and Elasticity'
+        },
+
+        uniformtext: {
+            mode: 'show',
+            minsize: 10
         },
 
         scene: {
