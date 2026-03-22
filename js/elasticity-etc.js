@@ -88,6 +88,8 @@ function runPlot() {
             // we can use this to note that we're dragging
             plot.on('plotly_relayouting', function(data){
                 window.clearInterval(rotator);
+                window.console.log(data["scene.camera"].eye.x + ", " +
+                    data["scene.camera"].eye.y + ", " + data["scene.camera"].eye.z);
             });
 
             plot.on('plotly_hover', function(data){
@@ -107,22 +109,37 @@ function runPlot() {
     let rotator = window.setInterval(animateCamera, 16);
 }
 
-/**
- * Drive camera animation
- */
 
+/**
+ * Drive circular camera animation
+ */
 function animateCamera() {
     'use strict';
 
-    const radius = 0.6;
+    const radius = 0.8;
     const secondsPerCycle = 3.5;
+    const basePoint = [4, 1.5, 1.2];
+    const up = [0, 0, 1.0]
+
+    const baseVectorScale = Math.sqrt(
+        basePoint[0] * basePoint[0] +
+        basePoint[1] * basePoint[1] +
+        basePoint[2] * basePoint[2]);
+
+    const baseVector = [basePoint[0] / baseVectorScale,
+        basePoint[1] / baseVectorScale, basePoint[2] / baseVectorScale];
+
+    const right = [baseVector[1] * up[2] - baseVector[2] * up[1],
+        baseVector[2] * up[0] - baseVector[0] * up[2],
+        baseVector[0] * up[1] - baseVector[1] * up[0]];
 
     let angle = ((Date.now() / 1000.0) * 2.0 * Math.PI) / secondsPerCycle;
+    let thisSin = Math.sin(angle);
+    let thisCos = Math.cos(angle);
 
-    // Keep X constant
-    let newX = 3.5;
-    let newY = radius * Math.sin(angle) + 1.5;
-    let newZ = radius * Math.cos(angle) + 1.2;
+    let newX = basePoint[0] + radius * (thisSin * up[0] + thisCos * right[0]);
+    let newY = basePoint[1] + radius * (thisSin * up[1] + thisCos * right[1]);
+    let newZ = basePoint[2] + radius * (thisSin * up[2] + thisCos * right[2]);
 
     let newEye = {
         x: newX,
