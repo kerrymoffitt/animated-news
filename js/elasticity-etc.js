@@ -6,9 +6,6 @@
 /* jshint esversion: 6 */
 /* global Plotly */
 
-// Three.js xforms
-// Add one Point
-
 /**
  * Actually set up the Brooks plot, including camera animation driver.
  */
@@ -51,7 +48,7 @@ function runPlot() {
     }
 
     // Build wrappers for input to Plotly, and actually create plot
-    let data_wrapper = {
+    let surfaceDataWrapper = {
 
         title: {text: 'Effects of Throughput and Elasticity'},
 
@@ -64,6 +61,20 @@ function runPlot() {
         type: 'surface'
     };
 
+    let pointDataWrapper = {
+        x: [10], // The x-coordinate of the point
+        y: [0.15], // The y-coordinate of the point
+        z: [65], // The z-coordinate of the point
+        mode: 'markers',
+        type: 'scatter3d',
+        marker: {
+            color: 'red',
+            size: 8,
+            symbol: 'circle'
+        },
+        name: 'Highlighted Point' // Name appears in the legend and hover
+    };
+
     let layout = {
 
         title: {
@@ -73,15 +84,30 @@ function runPlot() {
         scene: {
             xaxis: {title: {text: 'Traffic, mmb/d'}},
             yaxis: {title: {text: 'Demand Price Elasticity'}},
-            zaxis: {title: {text: '% Price Increase'}}
+            zaxis: {title: {text: '% Price Increase'}},
+
+            annotations: [{
+                showarrow: false,
+                x: 10,
+                y: 0.15,
+                z: 65,
+                text: "60-70%",
+                font: {
+                    color: "black",
+                    size: 14
+                },
+                xanchor: "left",
+                xshift: 12,
+                opacity: 0.7
+            }]
         },
 
         showlegend: false,
-        autosize: true
+        autosize: true,
     };
 
     // Set up callbacks, to do our best to start/stop camera animation
-    Plotly.newPlot('myDiv', [data_wrapper], layout, {responsive: true})
+    Plotly.newPlot('myDiv', [surfaceDataWrapper, pointDataWrapper], layout, {responsive: true})
         .then(plot => {
 
             // Unfortunately we get an unhover while dragging, but
@@ -116,7 +142,7 @@ function runPlot() {
 function animateCamera() {
     'use strict';
 
-    const radius = 0.8;
+    const radius = 0.65;
     const secondsPerCycle = 3.5;
     const basePoint = [4, 1.5, 1.2];
     const up = [0, 0, 1.0]
