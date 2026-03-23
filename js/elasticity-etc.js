@@ -50,8 +50,6 @@ function runPlot() {
     // Build wrappers for input to Plotly, and actually create plot
     let surfaceDataWrapper = {
 
-        title: {text: 'Effects of Throughput and Elasticity'},
-
         x: data_x,
         y: data_y,
         z: data_z,
@@ -79,13 +77,24 @@ function runPlot() {
 
     let layout = {
 
-        title: {
-            text: 'Effects of Throughput and Elasticity'
-        },
+        // title: {
+        //     text: 'Effects of Throughput and Elasticity'
+        // },
 
         uniformtext: {
             mode: 'show',
             minsize: 10
+        },
+
+        width: 600,
+        height: 500,
+
+        margin: {
+            l: 5, // left margin
+            r: 5, // right margin
+            b: 10, // bottom margin
+            t: 10, // top margin
+            pad: 4 // padding between the plotting area and the axis lines
         },
 
         scene: {
@@ -114,7 +123,7 @@ function runPlot() {
     };
 
     // Set up callbacks, to do our best to start/stop camera animation
-    Plotly.newPlot('myDiv', [surfaceDataWrapper, pointDataWrapper], layout, {responsive: true})
+    Plotly.newPlot('myDiv', [surfaceDataWrapper, pointDataWrapper], layout, {displayModeBar: false, responsive: true})
         .then(plot => {
 
             // Unfortunately we get an unhover while dragging, but
@@ -149,9 +158,9 @@ function runPlot() {
 function animateCamera() {
     'use strict';
 
-    const radius = 0.65;
+    const radius = 0.5;
     const secondsPerCycle = 3.5;
-    const basePoint = [4, 1.5, 1.2];
+    const basePoint = [2, 1.2, 1.2];
     const up = [0, 0, 1.0]
 
     const baseVectorScale = Math.sqrt(
