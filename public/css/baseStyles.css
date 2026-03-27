@@ -1,0 +1,11 @@
+.container {
+    display: flex; /* Makes the children sit side-by-side */
+    gap: 20px;     /* Adds space between the divs (modern property) */
+}
+
+.left-chart, .right-chart {
+    flex: 1;         /* Distributes equal width to each child */
+    padding: 15px;
+    border: 1px solid #ccc;
+    height: 500px
+}

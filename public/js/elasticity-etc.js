@@ -75,6 +75,9 @@ function runPlot() {
         name: 'Highlighted Point' // Name appears in the legend and hover
     };
 
+    const axisFontSize = 15;
+    const axisFontWeight = 600;
+
     let layout = {
 
         // title: {
@@ -86,7 +89,7 @@ function runPlot() {
             minsize: 10
         },
 
-        width: 600,
+        width: 500,
         height: 500,
 
         margin: {
@@ -98,9 +101,9 @@ function runPlot() {
         },
 
         scene: {
-            xaxis: {title: {text: 'Traffic, mmb/d'}},
-            yaxis: {title: {text: 'Demand Price Elasticity'}},
-            zaxis: {title: {text: '% Price Increase'}},
+            xaxis: {title: {text: 'Traffic, mmb/d', font: {size: axisFontSize, weight: axisFontWeight}}},
+            yaxis: {title: {text: 'Demand Price Elasticity', font: {size: axisFontSize, weight: axisFontWeight}}},
+            zaxis: {title: {text: '% Price Increase', font: {size: axisFontSize, weight: axisFontWeight}}},
 
             annotations: [{
                 showarrow: false,
@@ -115,7 +118,9 @@ function runPlot() {
                 xanchor: "left",
                 xshift: 12,
                 opacity: 0.7
-            }]
+            }],
+
+            camera: {center: {x: 0, y: 0, z: -0.4}}
         },
 
         showlegend: false,
@@ -168,10 +173,6 @@ function normalize(vecIn) {
         vecIn[1] / baseVectorScale, vecIn[2] / baseVectorScale];
 }
 
-let prevEye;
-let prevTime;
-let prevAngle;
-
 /**
  * Drive circular camera animation.
  * Rotate around basePoint, in plane defined by that point and vector to origin.
@@ -180,9 +181,9 @@ function animateCamera() {
     'use strict';
 
     // Top-level params
-    const radius = 1.0;
+    const radius = 0.8;
     const secondsPerCycle = 7;
-    const basePoint = [2, 1.2, 1.2];
+    const basePoint = [2, 1.5, 1.2];
     const up = [0, 0, 1.0]
 
     // Base vector is origin->basePoint, normalized

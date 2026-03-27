@@ -1,18 +1,28 @@
 <head>
     <!-- Load plotly.js into the DOM -->
     <title>Oil Price Increase by Throughput and Demand Price Elasticity</title>
+    <link rel="stylesheet" href="css/baseStyles.css" />
+    <script src='https://cdn.plot.ly/plotly-3.4.0.min.js'></script>
 </head>
 
 <body>
-"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
+On March 19, 2026, Robin J Brooks posted <a href="https://robinjbrooks.substack.com/p/how-high-will-oil-prices-go">an article on Substack</a> (which he <a href="https://paulkrugman.substack.com/p/talking-with-robin-brooks">subsequently discussed with Paul Krugman</a>) analyzing the effects of recent world events on the price of Brent oil.
+<p>
+His post included a three-dimensional surface plot, illustrating the effects of demand price elasticity and tanker traffic through the Strait of Hormuz.
 
-<div id='myDiv' style="height: 500px;">
-    <!-- Plotly chart will be drawn inside this DIV -->
+<div class="container">
+    <div class="left-chart">
+        <img src="images/RobinJBrooksChart.png" alt="Static surface chart"/>
+    </div>
+    <div id='myDiv' class="right-chart">
+    </div>
 </div>
 
-"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
-
+Here, we show Robin's chart on the left, and an alternative, more dynamic implementation on the right.
+<p>
+Although the three-dimensional aspects of this particular chart can be perceived well enough in a static 2D rendering, in general we advocate for dynamic camera perspectives for 3D charts, in order to ensure that the audience can fully perceive the content from all three dimensions.  Such dynamism brings an eye-catching aesthetic that functions hand-in-glove with the conveyance of the additional information it delivers.
+<p>
+This illustrates very specifically and practically the abstract notion that until one perceives a thing from multiple angles, one has not fully perceived it.
 </body>
 
-<script src='https://cdn.plot.ly/plotly-3.4.0.min.js'></script>
 <script src="js/elasticity-etc.js"></script>
