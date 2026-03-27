@@ -151,42 +151,66 @@ function runPlot() {
     let rotator = window.setInterval(animateCamera, 16);
 }
 
+/**
+ * Normalize 3D vector.
+ * @param vecIn vector to normalize
+ * @returns {number[]} normalized form.
+ */
+function normalize(vecIn) {
+
+    const baseVectorScale = Math.sqrt(
+        vecIn[0] * vecIn[0] +
+        vecIn[1] * vecIn[1] +
+        vecIn[2] * vecIn[2]);
+
+    // Now we're equipped to determine normalized baseVector
+    return [vecIn[0] / baseVectorScale,
+        vecIn[1] / baseVectorScale, vecIn[2] / baseVectorScale];
+}
+
+let prevEye;
+let prevTime;
+let prevAngle;
 
 /**
- * Drive circular camera animation
+ * Drive circular camera animation.
+ * Rotate around basePoint, in plane defined by that point and vector to origin.
  */
 function animateCamera() {
     'use strict';
 
-    const radius = 0.5;
-    const secondsPerCycle = 3.5;
+    // Top-level params
+    const radius = 1.0;
+    const secondsPerCycle = 7;
     const basePoint = [2, 1.2, 1.2];
     const up = [0, 0, 1.0]
 
-    const baseVectorScale = Math.sqrt(
-        basePoint[0] * basePoint[0] +
-        basePoint[1] * basePoint[1] +
-        basePoint[2] * basePoint[2]);
+    // Base vector is origin->basePoint, normalized
+    // So first determine scale (of unnormalized vector)
+    const baseVector = normalize(basePoint);
 
-    const baseVector = [basePoint[0] / baseVectorScale,
-        basePoint[1] / baseVectorScale, basePoint[2] / baseVectorScale];
-
-    const right = [baseVector[1] * up[2] - baseVector[2] * up[1],
+    // Cross base and up to get right
+    const right = normalize([baseVector[1] * up[2] - baseVector[2] * up[1],
         baseVector[2] * up[0] - baseVector[0] * up[2],
-        baseVector[0] * up[1] - baseVector[1] * up[0]];
+        baseVector[0] * up[1] - baseVector[1] * up[0]]);
 
-    let angle = ((Date.now() / 1000.0) * 2.0 * Math.PI) / secondsPerCycle;
+    // Derive newUp, perpendicular to both base and right
+    const newUp = normalize([baseVector[1] * right[2] - baseVector[2] * right[1],
+        baseVector[2] * right[0] - baseVector[0] * right[2],
+        baseVector[0] * right[1] - baseVector[1] * right[0]]);
+
+    // Okay!  Derive angle and thence position based on time and params
+    let currentTime = Date.now();
+    let angle = ((currentTime / 1000.0) * 2.0 * Math.PI) / secondsPerCycle;
+    angle %= 2.0 * Math.PI;
+
     let thisSin = Math.sin(angle);
     let thisCos = Math.cos(angle);
 
-    let newX = basePoint[0] + radius * (thisSin * up[0] + thisCos * right[0]);
-    let newY = basePoint[1] + radius * (thisSin * up[1] + thisCos * right[1]);
-    let newZ = basePoint[2] + radius * (thisSin * up[2] + thisCos * right[2]);
-
     let newEye = {
-        x: newX,
-        y: newY,
-        z: newZ
+        x: basePoint[0] + radius * (thisSin * newUp[0] + thisCos * right[0]),
+        y: basePoint[1] + radius * (thisSin * newUp[1] + thisCos * right[1]),
+        z: basePoint[2] + radius * (thisSin * newUp[2] + thisCos * right[2])
     };
 
     // Update the layout with the new camera position
